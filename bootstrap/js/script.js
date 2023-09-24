@@ -29,7 +29,7 @@ fetch(url + coins) // Fazemos a  requisição, após isso, a transformamos em fo
       } else if (optionOne === "bitcoin" && optionTwo === "real") {
         inputResultado.value = btcReal * quantidadeOne.value;
       }
-    }
+       }
   });
 
 // Veja se eu entendi sobre esse código, primeiro selecionamos os nossos select, quando uma das opções dentro

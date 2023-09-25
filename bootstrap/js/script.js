@@ -14,7 +14,7 @@ fetch(url + coins) // Fazemos a  requisição, após isso, a transformamos em fo
     const dolarReal = data.USDBRL.high; // Quanto 1 USD vale em real(4.93)
     const euroReal = data.EURBRL.high; // Quanto 1 EUR vale em real(5.26)
     const btcReal = data.BTCBRL.high;
-    console.log(dolarReal, euroReal, btcReal);
+
     selectOne.addEventListener("change", checkSelect);
     selectTwo.addEventListener("change", checkSelect);
 
@@ -22,39 +22,37 @@ fetch(url + coins) // Fazemos a  requisição, após isso, a transformamos em fo
       const optionOne = selectOne.value;
       const optionTwo = selectTwo.value;
 
-      if (optionOne === "dolar" && optionTwo === "real") {
-        inputResultado.value = dolarReal * quantidadeOne.value;
-      } else if (optionOne === "real" && optionTwo === "dolar") {
-        inputResultado.value = quantidadeOne.value / dolarReal;
-      } else if (optionOne === "euro" && optionTwo === "real") {
-        inputResultado.value = euroReal * quantidadeOne.value;
-      } else if (optionOne === "real" && optionTwo === "euro") {
-        inputResultado.value = quantidadeOne.value / euroReal;
-      } else if (optionOne === "bitcoin" && optionTwo === "real") {
-        inputResultado.value = btcReal * quantidadeOne.value;
-      } else if (optionOne === "real" && optionTwo === "bitcoin") {
-        inputResultado.value = quantidadeOne.value / btcReal;
-      }
+      // Todas as possíveis combinações cada um com o seu resultado:
+      const chave = `${optionOne}-${optionTwo}`;
+      const taxasDeConversao = {
+        "dolar-real": dolarReal,
+        "real-dolar": 1 / dolarReal,
+        "euro-real": euroReal,
+        "real-euro": 1 / euroReal,
+        "bitcoin-real": btcReal,
+        "real-bitcoin": 1 / btcReal,
+        "dolar-euro": dolarReal / euroReal,
+        "euro-dolar": euroReal / dolarReal,
+        "dolar-bitcoin": dolarReal / btcReal,
+        "bitcoin-dolar": btcReal / dolarReal,
+        "euro-bitcoin": euroReal / btcReal,
+        "bitcoin-euro": btcReal / euroReal,
+      };
+      if (taxasDeConversao[chave] !== undefined) {
+        const resultado = taxasDeConversao[chave] * quantidadeOne.value;
 
-      // Combinações sem "real"
-      if (optionOne === "dolar" && optionTwo === "euro") {
-        inputResultado.value = (dolarReal * quantidadeOne.value) / euroReal;
-      } else if (optionOne === "euro" && optionTwo === "dolar") {
-        inputResultado.value = (euroReal * quantidadeOne.value) / dolarReal;
-      } else if (optionOne === "dolar" && optionTwo === "bitcoin") {
-        inputResultado.value = (dolarReal * quantidadeOne.value) / btcReal;
-      } else if (optionOne === "bitcoin" && optionTwo === "dolar") {
-        inputResultado.value = (btcReal * quantidadeOne.value) / dolarReal;
-      } else if (optionOne === "euro" && optionTwo === "bitcoin") {
-        inputResultado.value = (euroReal * quantidadeOne.value) / btcReal;
-      } else if (optionOne === "bitcoin" && optionTwo === "euro") {
-        inputResultado.value = (btcReal * quantidadeOne.value) / euroReal;
+        //Limitamos em tres casas decimais:
+        const resultadoCasaD = resultado.toFixed(3);
+        // Número sem zeros:
+        const resultadoSemZ = parseFloat(resultadoCasaD);
+        // Retornamos em formatação local do Brasil:
+        inputResultado.value = resultadoSemZ.toLocaleString("pt-BR");
       }
-
-      // Adicione aqui mais combinações se necessário.
     }
   });
 
-// Veja se eu entendi sobre esse código, primeiro selecionamos os nossos select, quando uma das opções dentro
-// deles forem clicadas, chamamos a função verificarSelecao, optemos os valores/opções selecionados, se esses valores
-// forem diferentes dos valores padrões já selecionados, retornamos eles, certo?
+/*Sobre o código anterior: Veja se eu entendi: Criamos um
+objeto com todas as possíveis combinações e resultados, chamamos
+uma função que recebe os dois valores selecionados, juntamos eles
+e verificamos se ele existe no objeto, se ele existir, chamamos ele com
+a sua respectiva resposta/resultado, e por fim falamos onde o resultado será exibido*/

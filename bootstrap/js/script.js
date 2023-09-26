@@ -10,15 +10,17 @@ fetch(url + coins) // Fazemos a  requisição, após isso, a transformamos em fo
     return Response.json();
   })
   .then((data) => {
-    // Após isso, puxamos os valores:
+    // Após isso, puxamos os valores já no formato JSON:
     const dolarReal = data.USDBRL.high; // Quanto 1 USD vale em real(4.93)
     const euroReal = data.EURBRL.high; // Quanto 1 EUR vale em real(5.26)
-    const btcReal = data.BTCBRL.high;
+    const btcReal = data.BTCBRL.high; // Quanto o bitcoin vale em real
 
-    selectOne.addEventListener("change", checkSelect);
-    selectTwo.addEventListener("change", checkSelect);
-
-    function checkSelect() {
+    //Se o nosso input for definido chamamos a funcao de conversão
+    if (quantidadeOne.value !== undefined || quantidadeOne.value !== null) {
+      selectOne.addEventListener("change", convert);
+      selectTwo.addEventListener("change", convert);
+    }
+    function convert() {
       const optionOne = selectOne.value;
       const optionTwo = selectTwo.value;
 
@@ -51,8 +53,3 @@ fetch(url + coins) // Fazemos a  requisição, após isso, a transformamos em fo
     }
   });
 
-/*Sobre o código anterior: Veja se eu entendi: Criamos um
-objeto com todas as possíveis combinações e resultados, chamamos
-uma função que recebe os dois valores selecionados, juntamos eles
-e verificamos se ele existe no objeto, se ele existir, chamamos ele com
-a sua respectiva resposta/resultado, e por fim falamos onde o resultado será exibido*/

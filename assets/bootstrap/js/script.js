@@ -4,6 +4,7 @@ const selectOne = document.getElementById("selectOne");
 const selectTwo = document.getElementById("selectTwo");
 const inputResultado = document.getElementById("resultado");
 const quantidadeOne = document.getElementById("quantidadeOne");
+const calculate = document.getElementById("calculate");
 const formater = Intl.NumberFormat("en", {
   notation: "compact",
 });
@@ -18,10 +19,10 @@ fetch(url + coins) // Fazemos a  requisição, após isso, a transformamos em fo
     const euroReal = data.EURBRL.high; // Quanto 1 EUR vale em real(5.26)
     const btcReal = data.BTCBRL.high; // Quanto o bitcoin vale em real
 
-    //Se o nosso input for definido chamamos a funcao de conversão
-
-    selectOne.addEventListener("change", convert);
-    selectTwo.addEventListener("change", convert);
+    calculate.addEventListener("click", (event) => {
+      event.preventDefault();
+      convert();
+    });
 
     function convert() {
       const optionOne = selectOne.value;

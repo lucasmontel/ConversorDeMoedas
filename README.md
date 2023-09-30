@@ -13,3 +13,5 @@ fetch(url + coins) // Fazemos a  requisição, após isso, a transformamos em fo
     const btcReal = data.BTCBRL.high; // Quanto o bitcoin vale em real
 
 ```
+## Sobre:
+#### Esse projeto consome uma requisição API, extraindo os valores de moeda e faz a conversão de acordo com as escolhas do usuário
